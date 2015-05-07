@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <title>minesueeepuruuuuu</title>
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="game-container">
+            <table id="game"></table>
+            <div id="lives"></div>
+        </div>
+    </body>
+    <script charset="utf-8">
+        //CONSTANTS
+        var w = 15;
+        var h = 15;
+        var MAX_LIVES = 5;
+        var lives = MAX_LIVES;
+        // lower = easier
+        var difficulty = Math.max(Math.min(parseInt(prompt("Difficulty? (1-99)","1"),10),99),1)*.01;
+        //starting at down, ccw
+        var dir = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+
+        // var debug = false;
+
+        //get board display
+        var tbl = document.getElementById("game");
+
+        //initialize board
+        var board = [];
+        var initBoard = function() {
+            for (var i = 0 ; i < h ; i++) {
+                var row = [];
+                for (var j = 0 ; j < w ; j++) {
+                    row[j] = Math.random()<difficulty?1:0;
+                }
+                board[i] = row;
+            }
+        }
+        initBoard();
+
+        //draw board
+        var drawBoard = function() {
+            tbl.innerHTML = "";
+            for (var i = 0 ; i < h ; i++) {
+                var tr = tbl.insertRow();
+                for(var j = 0 ; j < w ; j++){
+                    var td = tr.insertCell();
+                    td.className = "block " + (board[i][j]?"mine":"safe");
+                }
+            }
+        }
+        drawBoard();
+
+        $("#lives").html("&#9829;".repeat(lives))
+
+        var getCell = function(i,j) {
+            if (tbl.rows.item(i)) {
+                return tbl.rows.item(i).cells.item(j);
+            } else {
+                return null;
+            }
+        }
+
+        //flag blocks as bombs
+        $('.block').click(function(ev) {
+            if (ev.shiftKey) {
+                $(ev.target).toggleClass('flag')
+            }
+        })
+
+        var check = function(cell) {
+            var sum = 0;
+            dir.forEach(function(mod) {
+                if (board[cell.parentNode.rowIndex+mod[0]]) {
+                    sum += board[cell.parentNode.rowIndex+mod[0]][cell.cellIndex+mod[1]] || 0;
+                }
+            })
+            cell.className = "block clicked";
+            if (0 == sum) {
+                var adj_cell;
+                dir.forEach(function(mod) {
+                    if (adj_cell = getCell(cell.parentNode.rowIndex+mod[0],cell.cellIndex+mod[1])) {
+                        if (!$(adj_cell).hasClass("clicked")) {
+                            check(adj_cell);
+                        }
+                    }
+                })
+            } else {
+                cell.innerHTML = sum;
+            }
+        }
+
+        $('.safe').click(function(ev) {
+            if (!ev.shiftKey) {
+                check(ev.target);
+            }
+        })
+
+        $('.mine').click(function(ev) {
+            if (!ev.shiftKey) {
+                //alert("boom!")
+                lives--;
+                $("#lives").html("&#9829;".repeat(lives))
+                if (0 == lives) {
+                    alert("you died lol");
+                    initBoard();
+                    drawBoard();
+                    lives = MAX_LIVES;
+                    $("#lives").html("&#9829;".repeat(lives))
+                }
+            }
+        })
+
+        //DEBUG
+        $('body').keypress(function() {
+            $('.mine').toggleClass("debug");
+        })
+    </script>
+</html>

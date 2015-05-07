@@ -1,0 +1,29 @@
+.block {
+    /*padding: 10px;*/
+    height: 2em;
+    width: 2em;
+    background: green;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.mine {
+}
+
+.safe {
+}
+
+.clicked {
+    vertical-align:middle;
+    text-align:center;
+    background: yellow;
+}
+
+.flag {
+    background: blue;
+}
+
+.debug {
+    background: red;
+}

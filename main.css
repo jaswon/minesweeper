@@ -1,3 +1,7 @@
+body {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
 .block {
     /*padding: 10px;*/
     height: 2em;

@@ -9,12 +9,12 @@
             <table id="game"></table>
             <div id="lives"></div>
         </div>
-        <pre class="instructions">
-            Click on a tile to test it.
-            Shift-click to flag it as a mine.
-            If you trigger a mine, you lose a life.
-            If you successfully flag all mines before losing all five lives, you win!
-        </pre>
+        <div class="instructions">
+            Click on a tile to test it. <br>
+            Shift-click to flag it as a mine. <br>
+            If you trigger a mine, you lose a life. <br>
+            If you successfully flag all mines before losing all five lives, you win! <br>
+        </div>
     </body>
     <script charset="utf-8">
         //CONSTANTS
@@ -27,13 +27,11 @@
         //starting at down, ccw
         var dir = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
 
-        // var debug = false;
-
         //get board display
         var tbl = document.getElementById("game");
 
         //initialize board
-        var board = [];
+        var board;
 
         var resetBoard = function() {
             board = [];
@@ -59,9 +57,7 @@
                     $(ev.target).toggleClass('flag')
                     var done = true;
                     $('.mine').each(function(index, el) {
-                        if (!$(el).hasClass('flag')) {
-                            done = false;
-                        }
+                        if (!$(el).hasClass('flag')) done = false;
                     })
                     if (done) {
                         alert("done!");
@@ -71,14 +67,11 @@
             })
 
             $('.safe').click(function(ev) {
-                if (!ev.shiftKey) {
-                    check(ev.target);
-                }
+                if (!ev.shiftKey) check(ev.target);
             })
 
             $('.mine').click(function(ev) {
                 if (!ev.shiftKey) {
-                    //alert("boom!")
                     lives--;
                     $("#lives").html("&#9829;".repeat(lives))
                     if (0 == lives) {
@@ -124,10 +117,5 @@
         resetBoard();
 
         $("#lives").html("&#9829;".repeat(lives))
-
-        //DEBUG
-        // $('body').keypress(function() {
-        //     $('.mine').toggleClass("debug");
-        // })
     </script>
 </html>

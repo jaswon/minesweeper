@@ -8,22 +8,12 @@
     -ms-user-select: none;
 }
 
-.mine {
-}
-
-.safe {
-}
-
 .clicked {
     vertical-align:middle;
     text-align:center;
-    background: yellow;
+    background: grey;
 }
 
 .flag {
-    background: blue;
-}
-
-.debug {
     background: red;
 }

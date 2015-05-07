@@ -57,17 +57,8 @@
             $('.block').click(function(ev) {
                 if (ev.shiftKey) {
                     $(ev.target).toggleClass('flag')
-                    var done = true;
-                    $('.mine').each(function(index, el) {
-                        if (!$(el).hasClass('flag')) done = false;
-                    })
-                    if (done) {
-                        alert("done!");
-                        score++;
-                        $("#score").html(score)
-                        resetBoard();
-                    }
                 }
+                endGame();
             })
 
             $('.safe').click(function(ev) {
@@ -86,6 +77,19 @@
                     }
                 }
             })
+        }
+
+        var endGame = function() {
+            var done = true;
+            $('.mine').each(function(index, el) {
+                if (!$(el).hasClass('flag')) done = false;
+            })
+            if (done) {
+                alert("done!");
+                score++;
+                $("#score").html(score)
+                resetBoard();
+            }
         }
 
         var check = function(cell) {

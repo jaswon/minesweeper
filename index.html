@@ -9,6 +9,12 @@
             <table id="game"></table>
             <div id="lives"></div>
         </div>
+        <pre class="instructions">
+            Click on a tile to test it.
+            Shift-click to flag it as a mine.
+            If you trigger a mine, you lose a life.
+            If you successfully flag all mines before losing all five lives, you win!
+        </pre>
     </body>
     <script charset="utf-8">
         //CONSTANTS
@@ -28,7 +34,9 @@
 
         //initialize board
         var board = [];
-        var initBoard = function() {
+
+        var resetBoard = function() {
+            board = [];
             for (var i = 0 ; i < h ; i++) {
                 var row = [];
                 for (var j = 0 ; j < w ; j++) {
@@ -36,11 +44,6 @@
                 }
                 board[i] = row;
             }
-        }
-        initBoard();
-
-        //draw board
-        var drawBoard = function() {
             tbl.innerHTML = "";
             for (var i = 0 ; i < h ; i++) {
                 var tr = tbl.insertRow();
@@ -49,25 +52,44 @@
                     td.className = "block " + (board[i][j]?"mine":"safe");
                 }
             }
+
+            //flag blocks as bombs
+            $('.block').click(function(ev) {
+                if (ev.shiftKey) {
+                    $(ev.target).toggleClass('flag')
+                    var done = true;
+                    $('.mine').each(function(index, el) {
+                        if (!$(el).hasClass('flag')) {
+                            done = false;
+                        }
+                    })
+                    if (done) {
+                        alert("done!");
+                        resetBoard();
+                    }
+                }
+            })
+
+            $('.safe').click(function(ev) {
+                if (!ev.shiftKey) {
+                    check(ev.target);
+                }
+            })
+
+            $('.mine').click(function(ev) {
+                if (!ev.shiftKey) {
+                    //alert("boom!")
+                    lives--;
+                    $("#lives").html("&#9829;".repeat(lives))
+                    if (0 == lives) {
+                        alert("you died lol");
+                        resetBoard();
+                        lives = MAX_LIVES;
+                        $("#lives").html("&#9829;".repeat(lives))
+                    }
+                }
+            })
         }
-        drawBoard();
-
-        $("#lives").html("&#9829;".repeat(lives))
-
-        var getCell = function(i,j) {
-            if (tbl.rows.item(i)) {
-                return tbl.rows.item(i).cells.item(j);
-            } else {
-                return null;
-            }
-        }
-
-        //flag blocks as bombs
-        $('.block').click(function(ev) {
-            if (ev.shiftKey) {
-                $(ev.target).toggleClass('flag')
-            }
-        })
 
         var check = function(cell) {
             var sum = 0;
@@ -91,30 +113,21 @@
             }
         }
 
-        $('.safe').click(function(ev) {
-            if (!ev.shiftKey) {
-                check(ev.target);
+        var getCell = function(i,j) {
+            if (tbl.rows.item(i)) {
+                return tbl.rows.item(i).cells.item(j);
+            } else {
+                return null;
             }
-        })
+        }
 
-        $('.mine').click(function(ev) {
-            if (!ev.shiftKey) {
-                //alert("boom!")
-                lives--;
-                $("#lives").html("&#9829;".repeat(lives))
-                if (0 == lives) {
-                    alert("you died lol");
-                    initBoard();
-                    drawBoard();
-                    lives = MAX_LIVES;
-                    $("#lives").html("&#9829;".repeat(lives))
-                }
-            }
-        })
+        resetBoard();
+
+        $("#lives").html("&#9829;".repeat(lives))
 
         //DEBUG
-        $('body').keypress(function() {
-            $('.mine').toggleClass("debug");
-        })
+        // $('body').keypress(function() {
+        //     $('.mine').toggleClass("debug");
+        // })
     </script>
 </html>

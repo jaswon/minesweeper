@@ -17,3 +17,25 @@
 .flag {
     background: red;
 }
+
+.game-container {
+    float: left;
+}
+
+.instructions {
+    float: left;
+    margin: 10px;
+}
+
+span {
+    display: inline-block;
+    margin: 15px;
+}
+
+#lives::before {
+    content: "lives: ";
+}
+
+#score::before {
+    content: "score: ";
+}

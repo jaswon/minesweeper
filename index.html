@@ -7,7 +7,8 @@
     <body>
         <div class="game-container">
             <table id="game"></table>
-            <div id="lives"></div>
+            <span id="lives"></span>
+            <span id="score"></span>
         </div>
         <div class="instructions">
             Click on a tile to test it. <br>
@@ -22,6 +23,7 @@
         var h = 15;
         var MAX_LIVES = 5;
         var lives = MAX_LIVES;
+        var score = 0;
         // lower = easier
         var difficulty = Math.max(Math.min(parseInt(prompt("Difficulty? (1-99)","1"),10) || 1,99),1)*.01;
         //starting at down, ccw
@@ -61,6 +63,8 @@
                     })
                     if (done) {
                         alert("done!");
+                        score++;
+                        $("#score").html(score)
                         resetBoard();
                     }
                 }
@@ -117,5 +121,6 @@
         resetBoard();
 
         $("#lives").html("&#9829;".repeat(lives))
+        $("#score").text(score)
     </script>
 </html>

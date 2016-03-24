@@ -4,7 +4,7 @@
         <link rel="stylesheet" type="text/css" href="main.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     </head>
-    <body>
+    <body oncontextmenu="return false;">
         <div class="game-container">
             <table id="game"></table>
             <span id="lives"></span>
@@ -12,7 +12,7 @@
         </div>
         <div class="instructions">
             Click on a tile to test it. <br>
-            Shift-click to flag it as a mine. <br>
+            Right click to flag it as a mine. <br>
             If you trigger a mine, you lose a life. <br>
             If you successfully flag all mines before losing all five lives, you win! <br>
         </div>
@@ -61,8 +61,8 @@
             }
 
             //flag blocks as bombs
-            $('.block').click(function(ev) {
-                if (ev.shiftKey) $(ev.target).toggleClass('flag');
+            $('.block').mousedown(function(ev) {
+                if (ev.which == 3) $(ev.target).toggleClass('flag');
                 var done = true;
                 $('.mine').each(function(index, el) {
                     if (!$(el).hasClass('flag')) done = false;
@@ -75,12 +75,12 @@
                 }
             })
 
-            $('.safe').click(function(ev) {
-                if (!ev.shiftKey) check(ev.target);
+            $('.safe').mousedown(function(ev) {
+                if (ev.which != 3) check(ev.target);
             })
 
-            $('.mine').click(function(ev) {
-                if (!ev.shiftKey) {
+            $('.mine').mousedown(function(ev) {
+                if (ev.which != 3) {
                     lives--;
                     if (0 == lives) {
                         alert("you died lol. you cleared " + score + " minefields.");

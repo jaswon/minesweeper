@@ -28,6 +28,11 @@
         // lower = easier
         var difficulty = Math.max(Math.min(parseInt(prompt("Difficulty? (1-99)","1"),10) || 1,99),1)*.01;
 
+        var size = Math.max(Math.min( parseInt(prompt("Board size? (10-30)","15")) || 15, 30 ), 10)
+
+        w = size
+        h = size
+
         //starting at down, ccw
         var dir = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
 
